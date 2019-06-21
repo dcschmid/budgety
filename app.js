@@ -33,7 +33,7 @@ var budgetController = (function() {
       inc: 0
     },
     budget: 0,
-    percentage: -1 
+    percentage: -1
   };
 
   return {
@@ -46,28 +46,28 @@ var budgetController = (function() {
       } else {
         ID = 0;
       }
-      
+
       //Create new Item based on 'inc' or 'exp' type
       if (type === 'exp') {
         newItem = new Expense(ID, des, val);
       } else if (type === 'inc') {
         newItem = new Income(ID, des, val);
       }
-      
+
       //Push it into our data strucutre
       data.allItems[type].push(newItem);
-      
+
       //Return the new Element
       return newItem;
     },
 
     deleteItem: function(type, id) {
       var ids, index;
-    
+
       ids = data.allItems[type].map(function(current) {
         return current.id;
       });
-      
+
       index = ids.indexOf(id);
 
       if (index !== -1) {
@@ -155,6 +155,11 @@ var UIController = (function() {
         document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
     },
 
+    deleteListItem: function(selectorID) {
+        var el = document.getElementById(selectorID);
+        el.parentNode.removeChild(el);
+    },
+
     clearFields: function() {
       var fields, fieldsArr;
 
@@ -179,7 +184,7 @@ var UIController = (function() {
       } else {
         document.querySelector(DOMstrings.percentageLabel).textContent = '---';
       }
-      
+
     },
 
     getDOMstrings: function() {
@@ -255,8 +260,10 @@ var controller = (function(budgetCtrl, UICtrl) {
         budgetCtrl.deleteItem(type, ID);
 
         // 2. Delete the item from the UI
+        UICtrl.deleteListItem(itemID);
 
         // 3. Update and show the new budget
+        updateBudget();
     }
   };
 
